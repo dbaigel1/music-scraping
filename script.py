@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup
 import requests
 import pandas as pd
 from datetime import datetime as dt
+import csv
 #create a bunch of soup, one for each news source
 #then scrape the headlines and see how they trend each day
 #dataframe should have column names of: date, 4 news sources, type of headline, positive/neutral/negative trend
@@ -35,6 +36,7 @@ print("Done with FOX")
 
 ##########################NBC#################################################
 urlNBC = requests.get("https://www.nbcnews.com/")
+
 if urlNBC.status_code != 200:
     print(urlNBC.status_code + "\n")
     print("Something is wrong with NBC...")
@@ -43,6 +45,7 @@ if urlNBC.status_code != 200:
 soupNBC = BeautifulSoup(urlNBC.content, 'html.parser')
 
 NBCcontainer = soupNBC.find('article', class_="teaseCard content___3FGvZ")
+
 NBCcontainer2 = NBCcontainer.find_all('h2')
 
 NBCheadline = NBCcontainer2[1].find('a').get_text()
@@ -88,7 +91,13 @@ newsTable = pd.DataFrame(columns = columnNames)
 newsTable.loc[0] = [today, FOXheadline, NBCheadline, WPheadline, ABCheadline]
 #print(newsTable)
 
-new_csv = newsTable.to_csv('newcsv.csv', index = None, header=True) #r'C:\Users\danielbaigel\Desktop\projects\news-scraping\
+#append csv onto main csv file
+newFile = newsTable.to_csv('new_csv.csv', index = None, header=True)
+
+sourceFile = open('new_csv.csv', 'r')
+data = sourceFile.read()
+with open('main_file.csv', 'a') as destFile:
+    destFile.write(data)
 
 
 
