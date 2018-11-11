@@ -77,6 +77,22 @@ WPheadline = WPcontainer.find('a').get_text()
 print(WPheadline)
 print("Done with WP")
 
+# ##########################WP#################################################
+urlABC = requests.get("https://abcnews.go.com/")
+if urlABC.status_code != 200:
+    print(urlABC.status_code + "\n")
+    print("Something is wrong with ABC...")
+    sys.exit("Check website status code")
+
+soupABC = BeautifulSoup(urlABC.content, 'html.parser')
+
+ABCcontainer = soupABC.find(id="row-1", class_="rows")
+
+ABCheadline = ABCcontainer.find('h1').get_text().strip()
+print(ABCheadline)
+print("Done with ABC")
+
+
 ####################################################################################
 
 
