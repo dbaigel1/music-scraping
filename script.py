@@ -3,33 +3,19 @@
 from bs4 import BeautifulSoup
 import requests
 import pandas as pd
+from datetime import datetime as dt
 #create a bunch of soup, one for each news source
 #then scrape the headlines and see how they trend each day
+#dataframe should have column names of: date, 4 news sources, type of headline, positive/neutral/negative trend
 #further applications:
 #	create categories for types of news: sports, politics, environment, current events
 #   and then label them as positive, neutral, or negative using machine learning
 
+#get the date
+today = dt.today()
+
+
 ##########################Get the soup ready##################################################
-
-############################CNN#################################################
-urlCNN = requests.get("https://edition.cnn.com/")
-if urlCNN.status_code != 200:
-    print(urlCNN.status_code + "\n")
-    print("Something is wrong with CNN...")
-    sys.exit("Check website status code")
-
-soupCNN = BeautifulSoup(urlCNN.content, 'html.parser')
-####TESTING
-bodyTag = soupCNN.body
-#print(bodyTag.contents)
-#for tag in bodyTag.children:
-#	print(tag)
-#	input("Next Tag press Enter..." + "\n\n\n")
-	#add a counter so we know which div to dive into!
-
-#CNNcontainer = soupCNN.find_all('h2')
-#CNNheadline = CNNcontainer[0].find('section')
-#CNNheadline2 = CNNheadline.find(class_='l-container')
 
 ###########################FOX#################################################
 urlFOX = requests.get("https://www.foxnews.com/")
@@ -57,9 +43,9 @@ if urlNBC.status_code != 200:
 soupNBC = BeautifulSoup(urlNBC.content, 'html.parser')
 
 NBCcontainer = soupNBC.find('article', class_="teaseCard content___3FGvZ")
-NBCcontainer2 = NBCcontainer.find('h2', class_="teaseCard__headline title___1T2jw title___1Fy4v")
+NBCcontainer2 = NBCcontainer.find_all('h2')
 
-NBCheadline = NBCcontainer2.find('a').get_text()
+NBCheadline = NBCcontainer2[1].find('a').get_text()
 print(NBCheadline)
 print("Done with NBC")
 
@@ -72,7 +58,7 @@ if urlWP.status_code != 200:
 
 soupWP = BeautifulSoup(urlWP.content, 'html.parser')
 
-WPcontainer = soupWP.find(class_="headline normal normal-style text-align-inherit ")
+WPcontainer = soupWP.find(class_="headline small normal-style text-align-inherit ")
 WPheadline = WPcontainer.find('a').get_text()
 print(WPheadline)
 print("Done with WP")
@@ -94,5 +80,24 @@ print("Done with ABC")
 
 
 ####################################################################################
+
+#Create a pandas dataframe
+columnNames = ["Date", "Fox Headline", "NBC Headline", "Wash Post Headline", "ABC Headline"]
+
+newsTable = pd.DataFrame(columns = columnNames)
+newsTable.loc[0] = [today, FOXheadline, NBCheadline, WPheadline, ABCheadline]
+#print(newsTable)
+
+new_csv = newsTable.to_csv('newcsv.csv', index = None, header=True) #r'C:\Users\danielbaigel\Desktop\projects\news-scraping\
+
+
+
+
+
+
+
+
+
+
 
 
