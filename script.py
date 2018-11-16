@@ -92,7 +92,7 @@ newsTable.loc[0] = [today, FOXheadline, NBCheadline, WPheadline, ABCheadline]
 #print(newsTable)
 
 #append csv onto main csv file
-newFile = newsTable.to_csv('new_csv.csv', index = None, header=True)
+newFile = newsTable.to_csv('new_csv.csv', index = None, header=False)
 
 sourceFile = open('new_csv.csv', 'r')
 data = sourceFile.read()
