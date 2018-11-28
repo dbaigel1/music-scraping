@@ -61,7 +61,7 @@ if urlWP.status_code != 200:
 
 soupWP = BeautifulSoup(urlWP.content, 'html.parser')
 
-WPcontainer = soupWP.find(class_="headline large normal-style text-align-inherit ")
+WPcontainer = soupWP.find(class_="headline small normal-style text-align-inherit ")
 WPheadline = WPcontainer.find('a').get_text()
 print(WPheadline)
 print("Done with WP")
