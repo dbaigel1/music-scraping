@@ -7,7 +7,7 @@ from textblob import TextBlob
 
 
 text = '''
-Christian missionary killed by tribe wrote of fears in journal before death: report
+13 Dogs With Vitiligo Who Will Warm Your Cold, Unloving Heart
 '''
 
 blob = TextBlob(text)
