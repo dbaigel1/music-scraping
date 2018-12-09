@@ -1,4 +1,5 @@
 #Created by Daniel Baigel 11/10/18
+#python web scraping script to scrape news headlines from different sources
 
 from bs4 import BeautifulSoup
 import requests
@@ -261,11 +262,12 @@ BFheadline, bfPolarity, bfSubj, bfCategory]
 
 #append csv onto main csv file
 #if not working, try changing index to None
-newFile = newsTable.to_csv('new_csv.csv', index = 0, header=False)
+newFile = newsTable.to_csv('new_csv.csv', index = None, header=False)
 
 sourceFile = open('new_csv.csv', 'r')
 data = sourceFile.read()
-with open('data_file.csv', 'a') as destFile:
+with open('data_file.csv', 'a', newline = '') as destFile:
+    destFile.write('\n')
     destFile.write(data)
 
 
