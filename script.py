@@ -13,8 +13,8 @@ from textblob import TextBlob
 #further applications:
 #	create categories for types of news: sports, politics, environment, technology, finance, entertainment, international, pop culture
 #   and then label them as positive, neutral, or negative using machine learning
-# bring in old data from mainfile
-#TODO: ADD SUBJECTIVITY, makes analysis more interesting
+
+
 
 #get the date
 today = dt.today()
@@ -99,7 +99,7 @@ if urlWP.status_code != 200:
 
 soupWP = BeautifulSoup(urlWP.content, 'html.parser')
 
-WPcontainer = soupWP.find(class_="headline small normal-style text-align-inherit ")
+WPcontainer = soupWP.find(class_="headline normal normal-style text-align-inherit ")
 WPheadline = WPcontainer.find('a').get_text()
 wpBlob = TextBlob(WPheadline)
 wpPolarity = wpBlob.sentiment.polarity
@@ -182,7 +182,65 @@ print(bfSubj)
 print("Done with BF")
 
 headlines.append(BFheadline)
+
+
+
+###########################China Daily################################################
+
+
+urlCD = requests.get("http://www.chinadaily.com.cn/china/")
+if urlCD.status_code != 200:
+    print(urlCD.status_code + "\n")
+    print("Something is wrong with China Daily...")
+    sys.exit("Check website status code")
+
+soupCD = BeautifulSoup(urlCD.content, 'html.parser')
+
+CDcontainer = soupCD.find(class_="l490")
+CDcontainer2 = CDcontainer.find(class_="tBox")
+
+CDheadline = CDcontainer2.find('a').get_text().strip()
+
+cdBlob = TextBlob(CDheadline)
+cdPolarity = cdBlob.sentiment.polarity
+cdSubj = cdBlob.sentiment.subjectivity
+
+print(CDheadline)
+print(cdPolarity)
+print(cdSubj)
+print("Done with CD")
+
+headlines.append(CDheadline)
+
+###########################Sixth Tone################################################
+
+
+urlST = requests.get("http://www.sixthtone.com/")
+if urlST.status_code != 200:
+    print(urlST.status_code + "\n")
+    print("Something is wrong with Sixth Tone...")
+    sys.exit("Check website status code")
+
+soupST = BeautifulSoup(urlST.content, 'html.parser')
+
+STcontainer = soupST.find('main', id="main-content")
+STheadline = STcontainer.find('h3', class_="heading-1").get_text().strip()
+
+
+stBlob = TextBlob(STheadline)
+stPolarity = stBlob.sentiment.polarity
+stSubj = stBlob.sentiment.subjectivity
+
+print(STheadline)
+print(stPolarity)
+print(stSubj)
+print("Done with ST")
+
+headlines.append(STheadline)
+
+
 ####################################################################################
+
 categories = []
 for headline in headlines:
     #create array of words in headline
@@ -227,6 +285,8 @@ wpCategory = categories[2]
 abcCategory = categories[3]
 bbCategory = categories [4]
 bfCategory = categories[5]
+cdCategory = categories[6]
+stCategory = categories[7]
 
 #Create a pandas dataframe
 columnNames = ["Date", "Fox Headline", "Fox Polarity", "Fox Subjectivity","Fox Category", 
@@ -234,7 +294,9 @@ columnNames = ["Date", "Fox Headline", "Fox Polarity", "Fox Subjectivity","Fox C
 "Wash Post Headline", "Wash Post Polarity", "Wash Post Subjectivity", "Wash Post Category", 
 "ABC Headline", "ABC Polarity", "ABC Subjectivity", "ABC Category",
 "Breitbart Headline", "Breitbart Polarity", "Breitbart Subjectivity", "Breitbart Category", 
-"Buzzfeed Headline", "Buzzfeed Polarity", "Buzzfeed Subjectivity", "Buzzfeed Category"]
+"Buzzfeed Headline", "Buzzfeed Polarity", "Buzzfeed Subjectivity", "Buzzfeed Category",
+"China Daily Headline", "China Daily Polarity", "China Daily Subjectivity", "China Daily Category",
+"Sixth Tone Headline", "Sixth Tone Polarity", "Sixth Tone Subjectivity", "Sixth Tone Category"]
 
 #rounding polarities and subjectivities to 2 decimal places
 foxPolarity = round(foxPolarity,2)
@@ -243,6 +305,8 @@ abcPolarity = round(abcPolarity,2)
 wpPolarity = round(wpPolarity,2)
 bbPolarity = round(bbPolarity,2)
 bfPolarity = round(bfPolarity,2)
+cdPolarity = round(cdPolarity,2)
+stPolarity = round(stPolarity,2)
 
 foxSubj = round(foxSubj,2)
 nbcSubj = round(nbcSubj,2)
@@ -250,6 +314,8 @@ abcSubj = round(abcSubj,2)
 wpSubj = round(wpSubj,2)
 bbSubj = round(bbSubj,2)
 bfSubj = round(bfSubj,2)
+cdSubj = round(cdSubj,2)
+stSubj = round(stSubj,2)
 
 newsTable = pd.DataFrame(columns = columnNames)
 newsTable.loc[0] = [today, FOXheadline, foxPolarity, foxSubj, foxCategory, 
@@ -257,7 +323,9 @@ NBCheadline, nbcPolarity, nbcSubj, nbcCategory,
 WPheadline, wpPolarity, wpSubj, wpCategory, 
 ABCheadline, abcPolarity, abcSubj, abcCategory, 
 BBheadline, bbPolarity, bbSubj, bbCategory, 
-BFheadline, bfPolarity, bfSubj, bfCategory]
+BFheadline, bfPolarity, bfSubj, bfCategory,
+CDheadline, cdPolarity, cdSubj, cdCategory,
+STheadline, stPolarity, stSubj, stCategory]
 #print(newsTable)
 
 #append csv onto main csv file
