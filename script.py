@@ -99,7 +99,7 @@ if urlWP.status_code != 200:
 
 soupWP = BeautifulSoup(urlWP.content, 'html.parser')
 
-WPcontainer = soupWP.find(class_="headline normal normal-style text-align-inherit ")
+WPcontainer = soupWP.find(class_="headline small normal-style text-align-inherit ") #class changes between small, normal, and large
 WPheadline = WPcontainer.find('a').get_text()
 wpBlob = TextBlob(WPheadline)
 wpPolarity = wpBlob.sentiment.polarity
