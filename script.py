@@ -23,7 +23,8 @@ today = dt.today()
 politics = ["trump", "dems", "democrats", "democrat", "democracy", "rep", "republican", 
 "republicans", "politics", "election", "elections", "candidate", "candidates", "ballots",
 "ballot", "campaign", "government", "govt", "gov't", "senate", "judiciary", "president",
-"paul ryan", "vote", "voting", "votes", "GOP", "DNC", "RNC"]
+"paul ryan", "vote", "voting", "votes", "gop", "dnc", "rnc", "trump's", "bernie", "bernie sanders",
+"senator", "presidential", "affordable care act"]
 
 sports = ["soccer", "football", "tennis", "hockey", "baseball", "world series", 
 "world-series", "sport", "sports", "champion", "tournament", "lacrosse", "softball",
@@ -32,7 +33,8 @@ sports = ["soccer", "football", "tennis", "hockey", "baseball", "world series",
 environment = ["storm", "typhoon", "earthquake", "tsunami", "hurricane", "tornado", 
 "earthquakes", "rain", "global warming", "climate", "environment"]
 
-technology = ["amazon", "iphone", "android", "google", "microsoft", "macbook", "technology"]
+technology = ["amazon", "iphone", "android", "google", "microsoft", "macbook", "technology",
+"netflix", "tech"]
 
 international = ["france", "london", "england", "uk", "brexit", "british", "china",
 "japan", "chinese", "tariff", "tariffs", "south africa", "asia", "south america", 
@@ -99,7 +101,7 @@ if urlWP.status_code != 200:
 
 soupWP = BeautifulSoup(urlWP.content, 'html.parser')
 
-WPcontainer = soupWP.find(class_="headline small normal-style text-align-inherit ") #class changes between small, normal, and large
+WPcontainer = soupWP.find(class_="headline xx-large normal-style text-align-inherit ") #class changes between small, normal, and large, and xx-large
 WPheadline = WPcontainer.find('a').get_text()
 wpBlob = TextBlob(WPheadline)
 wpPolarity = wpBlob.sentiment.polarity
@@ -249,7 +251,7 @@ for headline in headlines:
     categoryTag = ""
     for char in headline:
         char = char.lower()
-        if char != ' ':
+        if char != ' ' or char != ',':
             word += char
         else:
             words.append(word)
