@@ -78,13 +78,19 @@ if urlNBC.status_code != 200:
 soupNBC = BeautifulSoup(urlNBC.content, 'html.parser')
 
 NBCcontainer = soupNBC.find('article', class_="teaseCard content___3FGvZ")
+#NBCcontainer = soupNBC.find('div', class_="massiveHeadline massiveHeadline___3rr60")
+#NBCcontainer = soupNBC.find('article', class_="teaseCard content___3FGvZ content___FIXYj")
 
 NBCcontainer2 = NBCcontainer.find_all('h2')
+#NBCcontainerAlt2 = NBCcontainerAlt.find_all('h2')
 
 NBCheadline = NBCcontainer2[1].find('a').get_text()
+#NBCheadline = NBCcontainerAlt2[1].find('a').get_text()
+
 nbcBlob = TextBlob(NBCheadline)
 nbcPolarity = nbcBlob.sentiment.polarity
 nbcSubj = nbcBlob.sentiment.subjectivity
+
 print(NBCheadline)
 print(nbcPolarity)
 print(nbcSubj)
@@ -101,7 +107,7 @@ if urlWP.status_code != 200:
 
 soupWP = BeautifulSoup(urlWP.content, 'html.parser')
 
-WPcontainer = soupWP.find(class_="headline xx-large normal-style text-align-inherit ") #class changes between small, normal, and large, and xx-large
+WPcontainer = soupWP.find(class_="headline small normal-style text-align-inherit ") #class changes between small, normal, and large, x-large and xx-large
 WPheadline = WPcontainer.find('a').get_text()
 wpBlob = TextBlob(WPheadline)
 wpPolarity = wpBlob.sentiment.polarity
@@ -172,7 +178,7 @@ soupBF = BeautifulSoup(urlBF.content, 'html.parser')
 
 BFcontainer = soupBF.find(class_="featured-card__body")
 
-BFheadline = BFcontainer.find('h1').get_text().strip()
+BFheadline = BFcontainer.find('h2').get_text().strip()
 
 bfBlob = TextBlob(BFheadline)
 bfPolarity = bfBlob.sentiment.polarity
