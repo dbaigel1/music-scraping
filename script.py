@@ -20,11 +20,11 @@ from textblob import TextBlob
 today = dt.today()
 
 #create lists of categories to compare to
-politics = ["trump", "dems", "democrats", "democrat", "democracy", "rep", "republican", 
+politics = ["trump", "dems", "dem", "democrats", "democrat", "democracy", "rep", "republican", 
 "republicans", "politics", "election", "elections", "candidate", "candidates", "ballots",
 "ballot", "campaign", "government", "govt", "gov't", "senate", "judiciary", "president",
 "paul ryan", "vote", "voting", "votes", "gop", "dnc", "rnc", "trump's", "bernie", "bernie sanders",
-"senator", "presidential", "affordable care act"]
+"senator", "presidential", "affordable care act", "biden", "aoc"]
 
 sports = ["soccer", "football", "tennis", "hockey", "baseball", "world series", 
 "world-series", "sport", "sports", "champion", "tournament", "lacrosse", "softball",
@@ -38,7 +38,7 @@ technology = ["amazon", "iphone", "android", "google", "microsoft", "macbook", "
 
 international = ["france", "london", "england", "uk", "brexit", "british", "china",
 "japan", "chinese", "tariff", "tariffs", "south africa", "asia", "south america", 
-"africa", "african", "countries", "abroad"]
+"africa", "african", "countries", "abroad", "saudi", "iran", "israel"]
 
 
 ##########################Get the soup ready##################################################
