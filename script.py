@@ -296,17 +296,9 @@ bfCategory = categories[5]
 cdCategory = categories[6]
 stCategory = categories[7]
 
-#Create a pandas dataframe
-columnNames = ["Date", "Fox Headline", "Fox Polarity", "Fox Subjectivity","Fox Category", 
-"NBC Headline", "NBC Polarity", "NBC Subjectivity", "NBC Category", 
-"Wash Post Headline", "Wash Post Polarity", "Wash Post Subjectivity", "Wash Post Category", 
-"ABC Headline", "ABC Polarity", "ABC Subjectivity", "ABC Category",
-"Breitbart Headline", "Breitbart Polarity", "Breitbart Subjectivity", "Breitbart Category", 
-"Buzzfeed Headline", "Buzzfeed Polarity", "Buzzfeed Subjectivity", "Buzzfeed Category",
-"China Daily Headline", "China Daily Polarity", "China Daily Subjectivity", "China Daily Category",
-"Sixth Tone Headline", "Sixth Tone Polarity", "Sixth Tone Subjectivity", "Sixth Tone Category"]
 
 #rounding polarities and subjectivities to 2 decimal places
+
 foxPolarity = round(foxPolarity,2)
 nbcPolarity = round(nbcPolarity,2)
 abcPolarity = round(abcPolarity,2)
@@ -325,27 +317,27 @@ bfSubj = round(bfSubj,2)
 cdSubj = round(cdSubj,2)
 stSubj = round(stSubj,2)
 
-newsTable = pd.DataFrame(columns = columnNames)
-newsTable.loc[0] = [today, FOXheadline, foxPolarity, foxSubj, foxCategory, 
-NBCheadline, nbcPolarity, nbcSubj, nbcCategory, 
-WPheadline, wpPolarity, wpSubj, wpCategory, 
-ABCheadline, abcPolarity, abcSubj, abcCategory, 
-BBheadline, bbPolarity, bbSubj, bbCategory, 
-BFheadline, bfPolarity, bfSubj, bfCategory,
-CDheadline, cdPolarity, cdSubj, cdCategory,
-STheadline, stPolarity, stSubj, stCategory]
-#print(newsTable)
+#write webscraped data to csv file for viz
+#order should be: date, source, headline, polarity, subj, cat
 
-#append csv onto main csv file
-#if not working, try changing index to None
-newFile = newsTable.to_csv('new_csv.csv', index = None, header=False)
-
-sourceFile = open('new_csv.csv', 'r')
-data = sourceFile.read()
-with open('data_file.csv', 'a', newline = '') as destFile:
-    destFile.write('\n')
-    destFile.write(data)
-
+with open('flat_file.csv', mode='a', newline='') as destFile:
+    writer = csv.writer(destFile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+    #Fox
+    writer.writerow([today, 'Fox', FOXheadline, foxPolarity, foxSubj, foxCategory])
+    #NBC
+    writer.writerow([today, 'NBC', NBCheadline, nbcPolarity, nbcSubj, nbcCategory])
+    #WP
+    writer.writerow([today, 'Washington Post', WPheadline, wpPolarity, wpSubj, wpCategory])
+    #ABC
+    writer.writerow([today, 'ABC', ABCheadline, abcPolarity, abcSubj, abcCategory])
+    #BB
+    writer.writerow([today, 'Breitbart', BBheadline, bbPolarity, bbSubj, bbCategory])
+    #BF
+    writer.writerow([today, 'Buzzfeed', BFheadline, bfPolarity, bfSubj, bfCategory])
+    #CD
+    writer.writerow([today, 'China Daily', CDheadline, cdPolarity, cdSubj, cdCategory])
+    #ST
+    writer.writerow([today, 'Sixth Tone', STheadline, stPolarity, stSubj, stCategory])
 
 
 
