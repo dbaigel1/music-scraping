@@ -107,7 +107,8 @@ if urlWP.status_code != 200:
 
 soupWP = BeautifulSoup(urlWP.content, 'html.parser')
 
-WPcontainer = soupWP.find(class_="headline small normal-style text-align-inherit ") #class changes between small, normal, and large, x-large and xx-large
+#WPcontainer = soupWP.find(class_="no-skin flex-item flex-stack normal-air text-align-center equalize-height-target")
+WPcontainer = soupWP.find(class_="headline normal normal-style text-align-inherit ") #class changes between small, normal, and large, x-large and xx-large, and huge
 WPheadline = WPcontainer.find('a').get_text()
 wpBlob = TextBlob(WPheadline)
 wpPolarity = wpBlob.sentiment.polarity
@@ -320,8 +321,10 @@ stSubj = round(stSubj,2)
 #write webscraped data to csv file for viz
 #order should be: date, source, headline, polarity, subj, cat
 
+#in the future, only write data if data for that source exists
 with open('flat_file.csv', mode='a', newline='') as destFile:
     writer = csv.writer(destFile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+    writer.writerow(['\n'])
     #Fox
     writer.writerow([today, 'Fox', FOXheadline, foxPolarity, foxSubj, foxCategory])
     #NBC
