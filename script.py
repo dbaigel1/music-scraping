@@ -108,8 +108,34 @@ if urlWP.status_code != 200:
 soupWP = BeautifulSoup(urlWP.content, 'html.parser')
 
 #WPcontainer = soupWP.find(class_="no-skin flex-item flex-stack normal-air text-align-center equalize-height-target")
-WPcontainer = soupWP.find(class_="headline normal normal-style text-align-inherit ") #class changes between small, normal, and large, x-large and xx-large, and huge
-WPheadline = WPcontainer.find('a').get_text()
+try:
+    WPcontainer = soupWP.find(class_="headline normal normal-style text-align-inherit ") #class changes between small, normal, and large, x-large and xx-large, and huge
+    WPheadline = WPcontainer.find('a').get_text()
+    print("first try")
+except:
+    try:
+        WPcontainer = soupWP.find(class_="headline small normal-style text-align-inherit ") #class changes between small, normal, and large, x-large and xx-large, and huge
+        WPheadline = WPcontainer.find('a').get_text()
+    except:
+        try:
+            WPcontainer = soupWP.find(class_="headline large normal-style text-align-inherit ") #class changes between small, normal, and large, x-large and xx-large, and huge
+            WPheadline = WPcontainer.find('a').get_text()
+        except:
+            try:
+                WPcontainer = soupWP.find(class_="headline huge normal-style text-align-inherit ") #class changes between small, normal, and large, x-large and xx-large, and huge
+                WPheadline = WPcontainer.find('a').get_text()
+            except:
+                try:
+                    WPcontainer = soupWP.find(class_="headline x-large normal-style text-align-inherit ") #class changes between small, normal, and large, x-large and xx-large, and huge
+                    WPheadline = WPcontainer.find('a').get_text()
+                except:
+                    try:
+                        WPcontainer = soupWP.find(class_="headline xx-large normal-style text-align-inherit ") #class changes between small, normal, and large, x-large and xx-large, and huge
+                        WPheadline = WPcontainer.find('a').get_text()
+                    except:
+                        sys.exit("Can't find headline tag in Wash Post")
+
+#WPheadline = WPcontainer.find('a').get_text()
 wpBlob = TextBlob(WPheadline)
 wpPolarity = wpBlob.sentiment.polarity
 wpSubj = wpBlob.sentiment.subjectivity
