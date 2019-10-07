@@ -7,6 +7,7 @@ import pandas as pd
 from datetime import datetime as dt
 import csv
 from textblob import TextBlob
+import sys
 #create a bunch of soup, one for each news source
 #then scrape the headlines and see how they trend each day
 #dataframe should have column names of: date, 4 news sources, type of headline, positive/neutral/negative trend
@@ -274,7 +275,32 @@ print("Done with ST")
 headlines.append(STheadline)
 
 
+####################################The Onion########################################
+
+urlO = requests.get("http://www.theonion.com/")
+if urlO.status_code != 200:
+    print(urlO.status_code + "\n")
+    print("Something is wrong with The Onion...")
+    sys.exit("Check website status code")
+
+soupO = BeautifulSoup(urlO.content, 'html.parser')
+
+Oheadline = soupO.find('h3')
+Oheadline2 = Oheadline.get_text().strip()
+
+oBlob = TextBlob(Oheadline2)
+oPolarity = oBlob.sentiment.polarity
+oSubj = oBlob.sentiment.subjectivity
+print(Oheadline2)
+print(oPolarity)
+print(oSubj)
+print("Done with The Onion")
+headlines.append(Oheadline2)
+
 ####################################################################################
+
+
+
 
 categories = []
 for headline in headlines:
@@ -322,6 +348,7 @@ bbCategory = categories [4]
 bfCategory = categories[5]
 cdCategory = categories[6]
 stCategory = categories[7]
+oCategory = categories[8]
 
 
 #rounding polarities and subjectivities to 2 decimal places
@@ -334,6 +361,7 @@ bbPolarity = round(bbPolarity,2)
 bfPolarity = round(bfPolarity,2)
 cdPolarity = round(cdPolarity,2)
 stPolarity = round(stPolarity,2)
+oPolarity = round(oPolarity, 2)
 
 foxSubj = round(foxSubj,2)
 nbcSubj = round(nbcSubj,2)
@@ -343,6 +371,7 @@ bbSubj = round(bbSubj,2)
 bfSubj = round(bfSubj,2)
 cdSubj = round(cdSubj,2)
 stSubj = round(stSubj,2)
+oSubj = round(oSubj, 2)
 
 #write webscraped data to csv file for viz
 #order should be: date, source, headline, polarity, subj, cat
@@ -367,6 +396,8 @@ with open('flat_file.csv', mode='a', newline='') as destFile:
     writer.writerow([today, 'China Daily', CDheadline, cdPolarity, cdSubj, cdCategory])
     #ST
     writer.writerow([today, 'Sixth Tone', STheadline, stPolarity, stSubj, stCategory])
+    #O
+    writer.writerow([today, 'The Onion', Oheadline2, oPolarity, oSubj, oCategory])
 
 
 
